@@ -9,7 +9,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",      // Dev 
   "http://localhost:3000",      //def server
-  "https://your-frontend-domain.com"  //  deployment
+  "https://om-electricals.vercel.app/"  //  deployment
 ];
 
 app.use(
