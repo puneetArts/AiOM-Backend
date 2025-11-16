@@ -5,6 +5,8 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { PineconeStore } from "@langchain/pinecone";
 import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
 import { OpenAIEmbeddings } from "@langchain/openai";
+const filePath='./om-internal-docs.pdf'
+
 
 export const embeddings = new OpenAIEmbeddings({
   apiKey: process.env.OPENAI_API_KEY,
@@ -43,3 +45,7 @@ export async function indexTheDocument(filePath) {
 
   await vectorStore.addDocuments(documents);
 }
+
+indexTheDocument(filePath)
+  .then(() => console.log("Indexing complete!"))
+  .catch((err) => console.error("Indexing failed:", err));
