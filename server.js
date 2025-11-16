@@ -5,7 +5,27 @@ import { vectorStore } from "./prepare.js";
 import Groq from "groq-sdk";
 
 const app = express();
-app.use(cors());
+// CORS 
+const allowedOrigins = [
+  "http://localhost:5173",      // Dev 
+  "http://localhost:3000",      //def server
+  "https://your-frontend-domain.com"  //  deployment
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
