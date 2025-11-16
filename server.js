@@ -5,27 +5,24 @@ import { vectorStore } from "./prepare.js";
 import Groq from "groq-sdk";
 
 const app = express();
-// CORS 
+// CORS
 const allowedOrigins = [
-  "http://localhost:5173",      // Dev 
-  "http://localhost:3000",      //def server
-  "https://om-electricals.vercel.app/"  //  deployment
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://om-electricals.vercel.app"  // FIXED (no trailing slash)
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
 );
+
 app.use(express.json());
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -95,6 +92,7 @@ Answer:`;
   }
 });
 
-app.listen(3001, () => {
-  console.log("🚀 API server running at http://localhost:3001");
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`🚀 API server running on port ${PORT}`);
 });
